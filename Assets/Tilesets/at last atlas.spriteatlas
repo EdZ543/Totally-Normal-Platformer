@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: at last atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+    - {fileID: 2800000, guid: c4afbb03eb2944e2b8175f06a2d91bfb, type: 3}
+    totalSpriteSurfaceArea: 8704
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: -8328159106608433595, guid: c4afbb03eb2944e2b8175f06a2d91bfb, type: 3}
+  - {fileID: -7836376798481834204, guid: c4afbb03eb2944e2b8175f06a2d91bfb, type: 3}
+  - {fileID: -2244080383998043531, guid: c4afbb03eb2944e2b8175f06a2d91bfb, type: 3}
+  - {fileID: 8382717070696663976, guid: c4afbb03eb2944e2b8175f06a2d91bfb, type: 3}
+  - {fileID: -5930158604282628446, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -4970410492042351176, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -562605217060080129, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 6682738439518977790, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -232304020389510235, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 4717279005209572468, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -6551456632857933372, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -4233739483619845583, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 4362130248060910229, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -2542073858232844238, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 289909530908896649, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -942494204440328609, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 3912554482014063563, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: -5970157769536964832, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 1940044384358670937, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 7903714108508714464, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 5331757720867617967, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  - {fileID: 5743168839956448968, guid: ea3cb288c5d2c4edcaae7b621d6f893e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - spikes_3
+  - spikes_2
+  - spikes_1
+  - spikes_0
+  - Ground_3
+  - Ground_2
+  - Ground_1
+  - Ground_0
+  - Ground_7
+  - Ground_6
+  - Ground_5
+  - Ground_4
+  - Ground_9
+  - Ground_8
+  - Ground_16
+  - Ground_17
+  - Ground_14
+  - Ground_15
+  - Ground_12
+  - Ground_13
+  - Ground_10
+  - Ground_11
+  m_Tag: at last atlas
+  m_IsVariant: 0

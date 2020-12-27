@@ -1,0 +1,4429 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Eddie's Terrible Game</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+    <style type="text/css">
+        canvas{
+            
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            display: block;
+            /*
+            margin-left:300px;
+            margin-right:320px;
+            margin-top:0px;
+            border: 10px solid black;
+            <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+            <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+            */
+        }
+        
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var k = 1;
+var fad = 1;
+var freeze = -80;
+var freez = 80;
+var free = -270;
+var grav = 500;
+var gotime = 0;
+var fal = 0;
+var fa = 0;
+var flyup = 0;
+var isdead = 0;
+var f = 0;
+var zoom = 0;
+
+var app = 0;
+var back = 0;
+var down = 0;
+var up2 = 0;
+var gone = 0;
+
+var died = 0;
+var moo = 0;
+var rainbow = 0;
+var star = 0;
+var stop = -80;
+var sto = 80;
+var st = -270;
+var fin = 0;
+var subtheme = 0;
+
+var test = 0;
+var mobile = 0;
+var leftwards = 0;
+var rightwards = 0;
+var upwards = 0;
+var ispressed = false;
+var gosign = 0;
+var cast = 0;
+var checkpoint = 0;
+var checkcounter = 0;
+var timetest = 0;
+var canjump = 0;
+var blastalp = 0;
+var blastalp2 = 0;
+var blastalp3 = 0;
+var blastalp4 = 0;
+var blastalp5 = 0;
+var blastalp6 = 0;
+var blastalp7 = 0;
+var blastalp8 = 0;
+var blastalp9 = 0;
+var blastalp10 = 0;
+var vania = 0;
+var merc = 1;
+var deadyay = 0;
+var time = 0;
+var time2 = 0;
+var back = 0;
+var bouncing = 0;
+var scree = 0;
+
+var BootScene = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function BootScene ()
+{
+    Phaser.Scene.call(this, { key: 'BootScene' });
+},
+
+preload: function ()
+{
+    
+    var progressBar = this.add.graphics();
+            var progressBox = this.add.graphics();
+            progressBox.fillStyle(0x222222, 0.8);
+            progressBox.fillRect(240, 270, 320, 50);
+            
+            var width = this.cameras.main.width;
+            var height = this.cameras.main.height;
+            var loadingText = this.make.text({
+                x: width / 2,
+                y: height / 2 - 60,
+                text: '          It\'s loading, okay?  Just be patient.\nPatience is a virtue.  Man, I hate that overused quote.',
+                style: {
+                    font: '20px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            loadingText.setOrigin(0.5, 0.5);
+            
+            var percentText = this.make.text({
+                x: width / 2,
+                y: height / 2 - 5,
+                text: '0%',
+                style: {
+                    font: '18px monospace',
+                    fill: '#ffffff'
+                }
+            });
+            percentText.setOrigin(0.5, 0.5);
+            
+            var assetText = this.make.text({
+                x: width / 2,
+                y: height / 2 + 50,
+                text: '',
+                style: {
+                    font: '18px monospace',
+                    fill: '#ffffff'
+                }
+            });
+
+            assetText.setOrigin(0.5, 0.5);
+            
+            this.load.on('progress', function (value) {
+                percentText.setText(parseInt(value * 100) + '%');
+                progressBar.clear();
+                progressBar.fillStyle(0xffffff, 1);
+                progressBar.fillRect(250, 280, 300 * value, 30);
+            });
+            
+            this.load.on('fileprogress', function (file) {
+                assetText.setText('Loading asset: ' + file.key);
+            });
+
+            this.load.on('complete', function () {
+                progressBar.destroy();
+                progressBox.destroy();
+                loadingText.destroy();
+                percentText.destroy();
+                assetText.destroy();
+            });
+            
+    // load the resources here
+     // map made with Tiled in JSON format
+     this.load.tilemapTiledJSON('ma', 'assets/aliaa.json');
+    this.load.tilemapTiledJSON('map', 'assets/Ninjaxx.json');
+    // tiles in spritesheet 
+    this.load.spritesheet('tiles', 'assets/wario.png', {frameWidth: 70, frameHeight: 70});
+    // player animations
+    this.load.atlas('player', 'assets/player.png','assets/player.json');
+    this.load.spritesheet('dude', 'assets/guy.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.image('button', 'assets/button.png');
+    this.load.image('buttontwo', 'assets/button2.png');
+    this.load.image('bg', 'assets/title.png');
+    this.load.image('ded', 'assets/dead.png');
+    this.load.audio('robux','assets/robux.mp3');
+    this.load.image('pipe', 'assets/pipe.png');
+    this.load.image('fake', 'assets/fake.png');
+    this.load.image('fakeb', 'assets/fblock.png');
+    this.load.audio('laf','assets/laf.mp3');
+    this.load.audio('troll','assets/troll.mp3');
+    this.load.image('hitbox','assets/hitbox.png');
+    this.load.image('haha','assets/haha.png');
+    this.load.image('grey','assets/white.png');
+    this.load.image('empty','assets/empty.png');
+    this.load.image('mush','assets/mush.png');
+    this.load.audio('ooo','assets/ooo.mp3');
+    this.load.audio('collect','assets/collect.mp3');
+    this.load.image('spike','assets/spike.png');
+    this.load.image('lilfake','assets/lilfake.png');
+    this.load.image('bigfake','assets/bigfake.png');
+    this.load.image('restart','assets/restart.png');
+    this.load.image('flag','assets/flag.png');
+    this.load.image('castle','assets/castle.png');
+    this.load.audio('finished','assets/finished.mp3');
+    this.load.audio('main','assets/main.mp3');
+    this.load.image('gotcha','assets/gotcha.png');
+    //this.load.audio('wii','assets/wii.mp3');
+    this.load.audio('jump','assets/jump.mp3');
+    
+
+    ////////////////////////////////////////////////////////
+
+
+    this.load.tilemapTiledJSON('map2', 'assets/map22222.json');
+    this.load.image('pike','assets/icicle.png');
+    this.load.image('spiky','assets/spiky.png');
+    this.load.image('coin','assets/coin.png');
+    this.load.image('tile','assets/tile.png');
+    this.load.image('beat','assets/beat.png');
+    this.load.image('beat2','assets/beat2.png');
+    this.load.image('beat3','assets/beat3.png');
+    this.load.audio('finish','assets/finish.mp3');
+    this.load.audio('starup','assets/starup.mp3');
+    this.load.audio('undertheme','assets/undertheme.mp3');
+
+    ///////////////////////////////////////////////////////////
+
+    this.load.tilemapTiledJSON('map3', 'assets/map33333.json');
+    this.load.image('longha','assets/longha.png');
+    this.load.image('black','assets/black.png');
+    this.load.image('kaizo','assets/kaizo.png');
+    this.load.audio('bop','assets/coin.mp3');
+    this.load.image('left','assets/left.png');
+    this.load.image('right','assets/right.png');
+    this.load.image('jumpb','assets/jump.png');
+    this.load.image('mobileon','assets/mobileon.png');
+    this.load.image('mobileoff','assets/mobileoff.png');
+    this.load.image('downspike','assets/downspike.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.image('evilcoin','assets/evilcoin.png');
+    this.load.image('sign','assets/sign.png');
+
+    //////////////////////////////////////////////////////////////
+
+    this.load.tilemapTiledJSON('map4', 'assets/map444.json');
+    this.load.image('warning','assets/warning.png');
+    this.load.image('warning2','assets/warning2.png');
+    this.load.audio('castlemusic','assets/castle.mp3');
+    this.load.image('torch','assets/torch.png');
+    this.load.image('noflag','assets/noflag.png');
+    this.load.image('yesflag','assets/yesflag.png');
+    this.load.audio('checkmusic','assets/checkpoint.mp3');
+    this.load.image('arrow','assets/arrow.png');
+    this.load.image('sanscreen','assets/sanscreen.png');
+    this.load.image('bone','assets/bone.png');
+    this.load.image('bone2','assets/bone2.png');
+    this.load.image('smallbone','assets/smallbone.png');
+    this.load.image('blaste','assets/blaste.png');
+    this.load.image('leftblaste','assets/leftblaste.png');
+    this.load.image('rightblaste','assets/rightblaste.png');
+    this.load.audio('blastsound','assets/blast.mp3');
+    this.load.audio('megalovania','assets/megalovania.mp3');
+    this.load.image('sanscreen2','assets/sanscreen2.png');
+    this.load.image('fight','assets/fight.png');
+    this.load.image('mercy','assets/mercy.png');
+    this.load.audio('talk','assets/talk.mp3');
+    this.load.image('choice','assets/choice.png');
+    this.load.image('badtime','assets/badtime.png');
+    this.load.image('dunked','assets/dunked.png');
+    this.load.image('dab','assets/dab.png');
+    this.load.image('fire','assets/fire.png');
+    this.load.image('sanscreen3','assets/sanscreen3.png');
+    this.load.image('scar','assets/scar.png');
+    this.load.image('bullet','assets/bullet.png');
+    this.load.image('dance','assets/dance.png');
+    this.load.audio('shot','assets/shot.mp3');
+    this.load.image('sanscreen4','assets/sanscreen4.png');
+    this.load.image('credits','assets/credits.png');
+    this.load.image('end','assets/end.png');
+    this.load.audio('endsong','assets/endsong.mp3');
+},
+
+create: function ()
+{
+
+
+    //this.time.delayedCall(1000, function() {
+    this.scene.start('Home');
+    //}, [], this);
+    
+}
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Home = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Home ()
+{
+    Phaser.Scene.call(this, { key: 'Home' });
+},
+preload: function ()
+{
+            
+},
+create: function ()
+{
+    //let wii = this.sound.add('wii');
+    //wii.play();
+    this.cameras.main.setBackgroundColor('#ccccff');  
+    var bg = this.add.image(400, 300, 'bg');
+    bg.displayHeight = 600;
+    bg.displayWidth = 800;
+    var butx = -1000;
+    var buty = -1000;
+    var button2 = this.add.image(butx,buty, 'buttontwo');
+    var button = this.add.image(400, 450, 'button').setInteractive({ pixelPerfect: true });
+    button.on('pointerdown', () => this.scene.start('transition'));
+    button.on('pointerover', function () {
+
+        this.setTint(0x00ff00);
+        
+
+    });
+    button.on('pointerout', function () {
+
+        this.setTint();
+
+    });
+    button.displayHeight = 110;
+    button.displayWidth = 300;
+
+    
+    
+    
+    var on = this.add.image(670, 560, 'mobileon').setInteractive({ pixelPerfect: true });
+    var off = this.add.image(-1000, 560, 'mobileoff').setInteractive({ pixelPerfect: true });
+    on.displayHeight = 60;
+    on.displayWidth = 200;
+    off.displayHeight = 60;
+    off.displayWidth = 200;
+    on.on('pointerdown', () => off.x = 670);
+    off.on('pointerdown', () => off.x = -1000);
+
+    this.on = function(){
+        mobile = 1;
+    };
+
+    this.off = function(){
+        mobile = 0;
+    };
+    
+    on.on('pointerdown', () => this.on());
+    off.on('pointerdown', () => this.off());
+    var scoreText;
+    scoreText = this.add.text(350, 250, 'Full Release!', { fontSize: '20px', fill: '#000' });
+    
+    
+   
+    
+    
+    
+},
+
+update: function ()
+{
+    
+}
+   
+
+
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var transition = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function transition ()
+{
+    Phaser.Scene.call(this, { key: 'transition' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+    var oreText;
+    oreText = this.add.text(200, 200, 'Level 1', { fontSize: '100px', fill: '#FFFFFF' });
+    
+    this.time.delayedCall(1000, function() {
+    this.scene.start('One'); 
+    }, [], this);
+    
+}
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///Level 1
+One = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function One ()
+{
+    Phaser.Scene.call(this, { key: 'One' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    checkpoint = 0;
+    checkcounter = 0;
+    var left = this.add.image(-1000,380, 'left').setInteractive({ pixelPerfect: true });
+    var right = this.add.image(-1000,380, 'right').setInteractive({ pixelPerfect: true });
+    var up = this.add.image(-1000,380, 'jumpb').setInteractive({ pixelPerfect: true });
+   
+    if(mobile == 1){
+   left.x = 300;
+   right.x = 360;
+   up.x = 490;
+   }
+    left.setScrollFactor(0);
+    up.setScrollFactor(0);
+    right.setScrollFactor(0);
+    left.setDepth(10);
+    right.setDepth(10);
+    up.setDepth(10);
+    
+    
+    
+    let main = this.sound.add('main');
+    main.loop = true;
+    
+    let jump = this.sound.add('jump',{volume: 0.1});
+    main.play();
+    freeze = -80;
+    freez = 80;
+    free = -270;
+     // load the map 
+    var party = 0;
+    var grey = this.add.image(300,500,'grey');
+    grey.displayWidth = 2000;
+    grey.displayHeight = 400;
+    grey.setAlpha(party);
+    
+    map = this.make.tilemap({key:'map'});
+    // tiles for the ground layer
+     var groundTiles = map.addTilesetImage('tiles');
+     // create the ground layer
+    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    // the player will de with this layer
+    groundLayer.setCollisionByExclusion([-1]);
+
+    // set the boundaries of our game world
+    this.physics.world.bounds.width = groundLayer.width;
+    this.physics.world.bounds.height = groundLayer.height;
+
+    dunked = this.add.image(100,50,'dunked');
+    dab = this.add.image(220,100,'dab');
+    dab.displayHeight=  70;
+    dab.displayWidth = 60;
+    
+    // create the player sprite    
+    player = this.physics.add.sprite(30, 590); //bounce from items
+    if(back == 1){
+        player.y = 0;
+    }
+    //player.body.setAllowGravity(false);
+    player.setCollideWorldBounds(true); // don't go out of the map    
+
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0); 
+    
+    
+    // player will collide with the level tiles 
+    this.physics.add.collider(groundLayer, player);
+
+
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // set bounds so the camera won't go outside the game world
+    this.cameras.main.setBounds(0, -30, map.widthInPixels, map.heightInPixels);
+    // make the camera follow the player
+    this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=3;
+    // set background color, so the sky is not black    
+    this.cameras.main.setBackgroundColor('#ccccff');
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(270, 200, 'Doof', { fontSize: '10px', fill: '#000' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+((game.input.mousePointer.x/3)+(this.cameras.main.scrollX+266.66666666666663))+' Y:'+((game.input.mousePointer.y/3)+(this.cameras.main.scrollY+200)));
+    },this);
+   */
+    
+      
+     
+    
+     
+    player.anims.play('right', true);
+
+    
+    let lol = this.sound.add('troll');
+    ////////////death thing/////////////////
+    freeze = -80;
+    freez = 80;
+    free = -270;
+    gotime = 0;
+
+    let finished = this.sound.add('finished');
+    var gotmime = 0;
+    this.gotime = function(){
+        gotmime++;
+        if(gotmime<2){
+            finished.play();
+        }
+        gotime++;
+       main.stop();
+       lol.stop();
+
+    };
+    
+    var i = 0;
+    this.dead = function(){
+    lol.stop();
+    //finished.stop();
+    let death = this.sound.add('robux');
+    k = 1;
+    j = 1;
+    fad = 1;
+    freeze = -80;
+    freez = 80;
+    free = -270;
+    main.stop();
+    finished.stop();
+    //finished.stop();
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+  
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    
+    // restart game
+    this.time.delayedCall(1000, function() {
+     this.scene.restart();
+    }, [], this);
+ 
+};
+
+var pipe = this.add.sprite(256,614,'pipe');
+pipe.displayWidth = 32;
+pipe.displayHeight = 80;
+
+
+platforms = this.physics.add.staticGroup();
+box = platforms.create(241, 614, '');
+box.displayWidth = 2;
+box.displayHeight = 80;
+box.refreshBody();
+
+tox = platforms.create(271, 614, '');
+tox.displayWidth = 2;
+tox.displayHeight = 80;
+tox.refreshBody();
+box.setAlpha(0);
+tox.setAlpha(0);
+
+this.physics.add.collider(player, platforms);
+
+trol = this.add.image(152,537,'');
+trol.displayWidth = 16;
+trol.displayHeight = 16;
+trol.setAlpha(0);
+
+
+var z = 0;
+this.trool = function (){
+    party = 0.5;
+    z++;
+    if(z<2){
+    lol.play();
+    }
+    var ha = this.add.image(136+16,552-16,'haha');
+    grey.setAlpha(party);
+    main.stop();
+    
+};
+
+
+var fake = this.add.sprite(256,696,'fake');
+
+fakeb = this.add.sprite(72,584,'fakeb');
+fakeb.displayWidth = 16;
+fakeb.displayHeight = 16;
+fakeb.setAlpha(fad);
+
+var j = 0;
+
+this.spook = function(){
+    let laf = this.sound.add('laf');
+ j++;
+
+fad-=0.02;
+
+  if(j<2){
+    laf.play();
+  }
+  
+};
+
+
+this.party = function(){
+  
+    grey.setTint(Phaser.Math.RND.pick([0xff00ff,0x00ff00,0xff0000,0x0000ff]));
+  
+};
+
+var mushy = 1;
+mush = this.physics.add.image(152-1000,568-1000,'mush');
+this.mushette = function(){
+    mushy++;
+    let ooo = this.sound.add('ooo');
+    if(mushy < 3){
+    ooo.play();    
+    mush.x = 152;
+    mush.y = 568;
+    this.physics.add.collider(mush, groundLayer);
+    mush.setVelocityX(150);
+    mush.setVelocityY(-70); 
+    
+    }
+};
+var cole = 1;    
+this.extend = function(){
+    cole++;
+    let collect = this.sound.add('collect');
+    if(cole < 3){
+    collect.play();
+    }
+    pipe.displayHeight = 300;
+    pipe.displayWidth = 252;
+    pipe.x = 350;
+    pipe.y = 490;
+    box.displayHeight = 6969;
+    box.refreshBody();
+    tox.displayHeight = 6969;
+    tox.refreshBody();
+    
+    
+};
+
+spike = this.physics.add.image(424,632,'spike');
+spike.displayHeight = 16;
+spike.displayWidth = 16;
+spike.body.immovable = true;
+spike.setTint(0xff00ff);
+this.physics.add.collider(spike, groundLayer);
+this.physics.add.collider(spike, player, this.dead, null, this);
+
+var twofake = this.physics.add.sprite(608,599,'bigfake');
+var lilfake = this.physics.add.sprite(608,599,'lilfake');
+this.physics.add.collider(twofake, groundLayer);
+this.physics.add.collider(lilfake, groundLayer);
+
+this.ha = function(){
+    twofake.disableBody(true,true);
+    lilfake.disableBody(true,true);
+};
+
+this.physics.add.collider(twofake, player, this.ha, null, this);
+this.physics.add.collider(lilfake, player, this.ha, null, this);
+
+var restart = this.add.image(523,210,'restart').setInteractive({ pixelPerfect: true });
+    restart.on('pointerdown', () => this.dead());
+    restart.on('pointerover', function () {
+
+        this.setTint(0x00ff00);
+        
+
+    });
+    restart.on('pointerout', function () {
+
+        this.setTint();
+
+    });
+restart.displayHeight = 16;
+restart.displayWidth = 16;
+restart.setScrollFactor(0);
+
+var flag = this.physics.add.image(832,560,'flag');
+this.physics.add.collider(flag, groundLayer);
+flag.setDepth(-1);
+
+var castle = this.physics.add.image(992,560,'castle');
+castle.setDepth(-1);
+this.physics.add.collider(castle, groundLayer);
+
+spiketwo = this.physics.add.image(792,632,'spike');
+spiketwo.displayWidth = 16;
+spiketwo.displayHeight = 16;
+spiketwo.body.immovable = true;
+spiketwo.setTint(0xff00ff);
+this.physics.add.collider(spiketwo,groundLayer);
+
+this.boing = function(){
+    player.setVelocityY(-450);
+    
+};
+
+this.physics.add.collider(spiketwo,player,this.boing,null,this);
+
+
+    
+
+
+     var gotcha = this.physics.add.image(-1000,280,'gotcha');
+     this.physics.add.collider(gotcha,player,this.dead,null,this);
+     gotcha.setMaxVelocity(1000, 200);
+     var fall = 0;
+     this.gotya = function(){
+         fall++;
+         if(fall<2){
+        gotcha.x = 944;
+         gotcha.y = 500;
+         }
+        };
+
+    this.jump = function(){
+        jump.play();
+    };
+
+    this.input.addPointer(10);
+    
+    left.on('pointerdown', () => {
+        //ispressed = true;
+        leftwards++;
+
+
+        });
+    left.on('pointerout', () => leftwards = 0);
+    left.on('pointerover', () => {
+        if(ispressed){
+        leftwards++;
+        }
+    });
+    left.on('pointerup', () => {
+        ispressed = false;
+        leftwards = 0;
+        });
+   
+   //////////////
+   
+        right.on('pointerdown', () => {
+        //ispressed2 = true;
+        rightwards++;
+
+
+        });
+    right.on('pointerout', () => rightwards = 0);
+    right.on('pointerover', () => {
+        if(ispressed){
+        rightwards++;
+        }
+    });
+    right.on('pointerup', () => {
+        ispressed = false;
+        rightwards = 0;
+        });  
+
+
+
+           //////////////
+   
+        up.on('pointerdown', () => {
+        //ispressed3 = true;
+        upwards++;
+
+
+        });
+    up.on('pointerout', () => upwards = 0);
+    up.on('pointerover', () => {
+        if(ispressed){
+        upwards++;
+        }
+    });
+    up.on('pointerup', () => {
+        ispressed = false;
+        upwards = 0;
+        });  
+
+        this.input.on('pointerdown', function () {
+            ispressed = true;
+    },this);
+
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+    
+    if (cursors.left.isDown ||leftwards > 0)
+       {
+        
+        player.setVelocityX(freeze);
+       
+        if(freeze < 0){
+        player.anims.play('left', true);
+        }
+
+       }
+       else if (cursors.right.isDown || rightwards > 0)
+       {
+           player.setVelocityX(freez);
+
+           if(freeze < 0){
+            player.anims.play('right', true);
+            }
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor() || upwards > 0 && player.body.onFloor())
+       {
+        if(freeze < 0){
+         player.setVelocityY(free);   
+         this.jump();
+        }
+        
+       }
+       
+    
+       
+      if(player.y > 744){
+      this.dead();
+     ded.x = -1100;
+     
+    }
+    
+
+    fakeb.setAlpha(fad);
+    
+    if(player.x > 56 && player.x < 88 && player.y > 568 && player.y < 600){
+        this.spook();
+        k++;
+        }
+    
+    this.party();
+    if(player.x > 152-16 && player.x < 168 && player.y > 537-16 && player.y < 553 && player.body.blocked.up){
+    this.trool();
+    
+    
+    }
+    
+    
+    
+    if(k>1){
+         this.spook();
+        }
+        
+    if(player.x > 360-17 && player.x < 360+17 && player.y > 584-17 && player.y < 584+17 ){
+    this.dead();
+    
+    
+    }   
+  
+    if(player.x > 152-16 && player.x < 168 && player.y > 537-16+48 && player.y < 553+48 ){
+    
+        empty = this.add.image(152,584,'empty');
+    this.mushette();
+    
+    
+    }
+    
+    if(mush.x>236){
+        mush.x = -1000;
+        this.extend();  
+
+        
+    } 
+    if(player.x>spike.x&&spike.x<424+80){
+        spike.x=player.x;
+    }
+    
+    
+    if(player.x > 829 && player.x < 851 && player.y > 491){
+        this.gotime();
+        player.setVelocityY(50);
+        freeze = 0;
+        freez = 0;
+        free = 0;
+        
+    }
+        
+        if(gotime > 0 && player.y > 615){
+        player.setVelocityX(50);
+        player.anims.play('right', true);
+        if(player.x > 988){
+            player.disableBody(true,true);
+            this.time.delayedCall(1000, function() {
+            this.scene.start('transitiontwo');
+            }, [], this);
+        }
+        
+        }
+        if(player.x > 920){
+            this.gotya();
+        }
+
+        if(player.y > 0){
+            back = 0;
+        }
+       
+}
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var transitiontwo = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function transitiontwo ()
+{
+    Phaser.Scene.call(this, { key: 'transitiontwo' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+    var reText;
+    reText = this.add.text(150, 200, 'Level 2 :)', { fontSize: '50px', fill: '#FFFFFF' });
+    this.time.delayedCall(1000, function() {
+    this.scene.start('Two'); 
+    }, [], this);
+    
+}
+});
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level 2
+Two = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Two ()
+{
+    Phaser.Scene.call(this, { key: 'Two' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    fal = 0;
+    fa = 0;
+    flyup = 0;
+    isdead = 0;
+    f = 0;
+    zoom= 0;
+    back = 0;
+    app = 0;
+    back = 0;
+    down = 0;
+    up2 = 0;
+    gone = 0;
+    moo = 0;
+    rainbow = 0;
+    star = 0;
+    stop = 80;
+    sto = -80;
+    st = -270;
+    fin = 0;
+    subtheme = 0;
+    
+    var left = this.add.image(-1000,390, 'left').setInteractive({ pixelPerfect: true });
+    //left.setScale(1.2);
+    left.setScale(1.25);
+
+    var right = this.add.image(-1000,390, 'right').setInteractive({ pixelPerfect: true });
+    right.setScale(1.25);
+    var up = this.add.image(-1000,390, 'jumpb').setInteractive({ pixelPerfect: true });
+    up.setScale(1.25);
+    if(mobile == 1){
+   left.x = 280;
+   right.x = 360;
+   up.x = 490;
+   }
+    left.setScrollFactor(0);
+    up.setScrollFactor(0);
+    right.setScrollFactor(0);
+    left.setDepth(10);
+    right.setDepth(10);
+    up.setDepth(10);
+    
+
+    let finish = this.sound.add('finish');
+    let starup = this.sound.add('starup');
+    starup.loop = true;
+    let undertheme = this.sound.add('undertheme');
+    undertheme.loop = true;
+    let jump = this.sound.add('jump',{volume: 0.05});
+    
+    map = this.make.tilemap({key:'map2'});
+    // tiles for the ground layer
+     var groundTiles = map.addTilesetImage('tiles');
+     // create the ground layer
+    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    // the player will collide with this layer
+    groundLayer.setCollisionByExclusion([-1]);
+
+    // set the boundaries of our game world
+    this.physics.world.bounds.width = groundLayer.width;
+    this.physics.world.bounds.height = groundLayer.height;
+
+    // create the player sprite    
+    player = this.physics.add.sprite(30, 590); //bounce from items
+    player.setCollideWorldBounds(true); // don't go out of the map    
+
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0); 
+    
+    
+    // player will collide with the level tiles 
+    this.physics.add.collider(groundLayer, player);
+    
+
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // set bounds so the camera won't go outside the game world
+    this.cameras.main.setBounds(0, -30, map.widthInPixels, map.heightInPixels);
+    // make the camera follow the player
+    this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=2.5;
+    // set background color, so the sky is not black    
+    //this.cameras.main.setBackgroundColor('#ccccff');
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(270, 200, 'Doof', { fontSize: '10px', fill: '#ccccff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+((game.input.mousePointer.x/2.5)+(this.cameras.main.scrollX+240))+' Y:'+((game.input.mousePointer.y/2.5)+(this.cameras.main.scrollY+180)));
+    },this);
+   */
+    
+      
+     
+    
+     
+    player.anims.play('right', true);
+
+    
+    var i = 0;
+    this.dead = function(){
+    
+    isdead++;
+    
+    let death = this.sound.add('robux');
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+  
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    finish.stop();
+    undertheme.stop();
+    starup.stop();
+    
+    // restart game
+    this.time.delayedCall(1000, function() {
+     this.scene.restart();
+    }, [], this);
+ 
+};
+
+
+
+
+
+
+var restart = this.add.image(545,195,'restart').setInteractive({ pixelPerfect: true });
+
+    restart.on('pointerdown', () => this.dead());
+    restart.on('pointerover', function () {
+
+        this.setTint(0x00ff00);
+        
+
+    });
+    restart.on('pointerout', function () {
+
+        this.setTint();
+
+    });
+restart.displayHeight = 20;
+restart.displayWidth = 20;
+restart.setScrollFactor(0);
+restart.setDepth(1);
+
+
+/*
+    var coreText;
+    coreText = this.add.text(370, 300, 'doop\ndap', { fontSize: '10px', fill: '#ccccff' });
+    //fix the text to the camera
+    coreText.setScrollFactor(0);
+
+    this.input.on('pointerdown', function (pointer) {
+    coreText.setText(game.input.mousePointer.x+'\n'+game.input.mousePointer.y);
+    },this);
+
+
+    var oreText;
+    oreText = this.add.text(370, 270, 'duh', { fontSize: '10px', fill: '#ccccff' });
+    // fix the text to the camera
+    oreText.setScrollFactor(0);
+
+    this.input.on('pointerdown', function (pointer) {
+    oreText.setText(this.cameras.main.scrollX+'\n'+this.cameras.main.scrollY);
+    },this);
+
+*/
+
+    var oreText;
+    oreText = this.add.text(796, 320, 'If you jump in here\n3 times, you\'ll get\nan easter egg!\n\n       👇', { fontSize: '15px', fill: '#ccccff' });
+    
+
+
+    
+
+    this.jump = function(){
+        jump.play();
+    };
+
+
+pike = this.add.image(104,528,'pike');
+
+nike = this.physics.add.image(216,528,'pike');
+
+hike = this.physics.add.image(328,528,'pike');
+
+like = this.physics.add.image(440,528,'pike');
+nike.body.setAllowGravity(false);
+hike.body.setAllowGravity(false);
+like.body.setAllowGravity(false);
+like.body.immovable = true;
+this.physics.add.collider(nike,player,this.dead,null,this);       
+this.physics.add.collider(hike,player,this.dead,null,this);  
+this.physics.add.collider(like,player,this.dead,null,this); 
+
+this.fall = function(){
+    if(nike.y < 624){
+    nike.setVelocityY(400);
+   }else{
+    nike.setVelocityY(0);
+   }
+
+};
+
+this.fall2 = function(){
+    if(hike.y < 624){
+    hike.setVelocityY(400);
+   }else{
+    hike.setVelocityY(0);
+   }
+   if(hike.y > 624 && player.x > 200+112 && isdead<1){
+    flyup++;
+   }
+};
+
+this.fall3 = function(){
+    if(like.y < 624){
+    like.setVelocityY(400);
+   }else{
+    like.setVelocityY(0);
+   }
+   if(like.y > 624 && player.x > 555 && isdead<1){
+    
+    zoom++;
+    
+}
+};
+
+this.fly = function(){
+    hike.setVelocityY(-200);
+
+};
+
+this.zoom = function(){
+    if(back < 1){
+    like.setVelocityX(400);
+    }
+};
+
+this.zoomback = function(){
+    
+    like.setVelocityX(-400);
+};
+
+what = this.physics.add.image(-1000,-1000,'restart');
+what.displayHeight = 20;
+what.displayWidth = 20;
+what.setDepth(1);
+what.body.setAllowGravity(false);
+what.body.immovable = true;
+this.physics.add.collider(what,player,this.dead,null,this);
+
+this.count = function(){
+died++;
+this.dead();
+};
+
+spiky = this.physics.add.staticGroup();
+
+spiky1 = spiky.create(856,472,'spiky');
+spiky2 = spiky.create(872,472,'spiky');
+spiky3 = spiky.create(888,472,'spiky');
+this.physics.add.collider(spiky,groundLayer);
+this.physics.add.collider(spiky,player,this.count,null,this);
+this.physics.add.collider(spiky,player,this.dead,null,this);
+
+this.text = function(){
+    oreText.setText('\n\nGood job, you just\nwasted your time.');
+};
+
+castle = this.add.image(43,392,'castle');
+castle.setDepth(-1);
+flag = this.add.image(144,370,'flag');
+flag.setDepth(-1);
+
+skin = this.add.image(player.x,player.y,'grey');
+skin.displayHeight = 16;
+skin.displayWidth = 16;
+skin.setAlpha(0);
+
+var unbeatable = 0;
+this.invincible = function(){
+    unbeatable++;
+    undertheme.stop();
+    if(unbeatable >0 && unbeatable < 2){
+        starup.play();
+    }
+    skin.setAlpha(0.5);
+    skin.setTint(Phaser.Math.RND.pick([0xff0000,0x00ff00,0x0000ff]));
+    coin.disableBody(true,true);
+    star++;
+
+};
+
+this.tast = function(){
+   rainbow++;
+};
+coin = this.physics.add.image(236,369,'coin');
+coin.body.setAllowGravity(false);
+coin.body.immovable = false;
+this.physics.add.collider(coin,player,this.tast,null,this);
+
+
+spikes = this.physics.add.group({
+    key: 'spiky',
+    repeat: 7,
+    setXY: { x: 616, y: 488, stepX: 16 }
+});
+this.physics.add.collider(spikes,groundLayer);
+this.physics.add.collider(spikes,player,this.dead,null,this);
+
+this.woah = function(){
+what.y = player.y-100;
+what.x = 1010;
+if(down < 1){
+what.setVelocityY(200);
+}
+restart.x = -1000;
+};
+
+this.wah = function(){
+what.setVelocityY(-200);
+};
+
+this.gone = function(){
+    restart.x = 545;
+    what.x = -1000;
+};
+
+tiles = this.physics.add.staticGroup();
+tile = tiles.create(680,456,'tile');
+//tile.body.setAllowGravity(false);
+tile.x = 680;
+//tile.body.immovable = true;
+this.physics.add.collider(player,tile);
+
+
+this.move = function(){
+    if( tile.x > 648){
+    tile.x -= 5;
+    }
+    tile.refreshBody();
+};
+
+beat = this.physics.add.image(490,352,'beat');
+beat.body.immovable = true;
+beat.body.setAllowGravity(false);
+beat.displayHeight = 20;
+beat.displayWidth = 100;
+this.physics.add.collider(beat,player,this.dead,null,this);
+this.pun = function(){
+beat.setVelocityY(200);
+};
+
+beat3 = this.physics.add.image(-10000,358,'beat3');
+beat3.setOffset(-10, -50,1000,600);
+this.physics.add.collider(beat3,player,this.dead,null,this);
+beat3.displayHeight = 30;
+beat3.displayWidth = 60;
+beat3.body.immovable = true;
+beat3.body.setAllowGravity(false);
+
+this.punny = function(){
+beat2 = this.add.image(415,358,'beat2');
+beat2.displayHeight = 30;
+beat2.displayWidth = 100;
+
+beat3.x = 375;
+};
+
+this.beatdown = function(){
+beat3.setVelocityY(200);
+};
+
+this.unmove = function(){
+player.body.immovable = true;
+};
+this.yesmove = function(){
+player.body.immovable = false;
+};
+
+
+this.yaa = function(){
+    fin++;
+    starup.stop();
+    undertheme.stop();
+    if(fin > 0 && fin < 2){
+    finish.play();
+    }
+    
+};
+
+this.maydead = function(){
+if(star < 1 ){
+ this.dead();
+}else{
+    yuk.x = -1000;
+}
+};
+
+yuk = this.physics.add.image(-1000,280,'gotcha');
+yuk.body.setAllowGravity(false);
+this.physics.add.collider(yuk,player,this.maydead,null,this);
+
+var wooh = 0;
+this.yahh = function(){
+wooh++;
+if(wooh > 0 && wooh < 2){
+yuk.x = 80;
+yuk.y = 280;
+}
+yuk.setVelocityY(300);
+};
+
+this.playtheme = function(){
+    undertheme.play();
+};
+
+    this.input.addPointer(10);
+    left.on('pointerdown', () => {
+        //ispressed = true;
+        leftwards++;
+
+
+        });
+    left.on('pointerout', () => leftwards = 0);
+    left.on('pointerover', () => {
+        if(ispressed){
+        leftwards++;
+        }
+    });
+    left.on('pointerup', () => {
+        ispressed = false;
+        leftwards = 0;
+        });
+   
+   //////////////
+   
+        right.on('pointerdown', () => {
+        //ispressed2 = true;
+        rightwards++;
+
+
+        });
+    right.on('pointerout', () => rightwards = 0);
+    right.on('pointerover', () => {
+        if(ispressed){
+        rightwards++;
+        }
+    });
+    right.on('pointerup', () => {
+        ispressed = false;
+        rightwards = 0;
+        });  
+
+
+
+           //////////////
+   
+        up.on('pointerdown', () => {
+        //ispressed3 = true;
+        upwards++;
+
+
+        });
+    up.on('pointerout', () => upwards = 0);
+    up.on('pointerover', () => {
+        if(ispressed){
+        upwards++;
+        }
+    });
+    up.on('pointerup', () => {
+        ispressed = false;
+        upwards = 0;
+        });  
+
+        this.input.on('pointerdown', function () {
+            ispressed = true;
+    },this);
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+
+   nike.x = 216;
+   hike.x = 328;
+   skin.x = player.x;
+   skin.y = player.y;
+
+
+   if (cursors.left.isDown && st == -270 || leftwards > 0 && st == -270)
+       {
+        
+        player.setVelocityX(sto);
+       
+      
+        player.anims.play('left', true);
+        
+
+       }
+       else if (cursors.right.isDown && st == -270 || rightwards > 0 && st == -270)
+       {
+           player.setVelocityX(stop);
+
+           
+            player.anims.play('right', true);
+            
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor() && st == -270 || upwards > 0 && player.body.onFloor() && st == -270)
+       {
+        
+         player.setVelocityY(st);   
+         this.jump();
+        
+        
+       }
+       
+       
+       if(player.x > 200){
+         fal++;
+       } 
+       
+       if(fal > 0){
+       this.fall();
+           
+       }
+
+       if(player.x > 200+112){
+         fa++;
+
+       }
+
+       if(fa > 0){
+           this.fall2();
+       }
+
+       if(flyup > 0){
+           this.fly();
+       }
+        
+       if(player.x > 200+112+112){
+         f++;
+
+       }
+       
+       if(f > 0){
+           this.fall3();
+       }
+       
+       if(zoom > 0 ){
+           this.zoom();
+       }else{
+           like.x = 440;
+       }
+    
+       if(like.x > 1100){
+           this.zoomback();
+           back++;
+           zoom = 0;
+       }
+       
+       if(player.x > 994){
+        app++;
+       }
+
+       if(app > 0 && app < 2){
+        this.woah();
+       }
+
+       if(what.y > 651){
+        down++;
+        up2++;
+        
+    }
+
+    if(up2>0 && up2 < 2){
+        this.wah();
+    }
+
+    if(what.y < player.y-100 && up2 > 0){
+        gone++;
+
+    }
+       
+    if(gone > 0){
+        this.gone();
+    }
+
+    if(died > 2){
+     this.text();
+    }
+
+    if(player.x < 160){
+        
+    }
+
+    if(player.y < 503 && player.x < 705 && player.y > 407){
+        moo++;
+
+    }
+
+    if( moo > 0){
+        this.move();
+    }
+
+    if(player.x < 547 && player.y < 502){
+        this.pun();
+    }
+
+    if(beat.y > 504){
+        this.punny();
+    }
+
+    if(player.x < 404 && player.y < 487){
+        this.beatdown();
+    }
+
+    if(player.x < 313 && player.y < 487){
+        this.unmove();
+    }else{
+        this.yesmove();
+    }
+
+    if(rainbow > 0){
+        this.invincible();
+    }
+
+    if(player.x < 160 && player.y < 489){
+        this.yaa();
+        player.setVelocityY(50);
+        stop = 0;
+        sto = 0;
+        st = 0;
+    }
+
+    if(fin > 0 && player.y > 407){
+        player.setVelocityX(-50);
+        player.anims.play('right', true);
+        if(player.x < 46){
+            player.disableBody(true,true);
+            skin.x = -1000;
+            this.time.delayedCall(1000, function() {
+            this.scene.start('transitionthree');
+            }, [], this);
+        }
+      }
+
+      if(player.x < 97 && player.y < 472){
+        this.yahh();
+      }
+      
+      subtheme++;
+      if(subtheme > 0 && subtheme < 2){
+          this.playtheme();
+      }
+      
+
+}
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var transitionthree = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function transitionthree ()
+{
+    Phaser.Scene.call(this, { key: 'transitionthree' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+    var reText;
+    reText = this.add.text(150, 200, 'LAST LEVEl!!!\n\n\nI\'m too lazy\nto make any more', { fontSize: '50px', fill: '#FFFFFF' });
+    //reText = this.add.text(150, 200, 'Congrats!!!\nLevel 3 coming soon', { fontSize: '50px', fill: '#FFFFFF' });
+
+    this.time.delayedCall(4000, function() {
+    this.scene.start('Three'); 
+    }, [], this);
+    
+}
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////                                                                            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////                                    ///////////////////////////////////          /////////////////////////////////////////////////////////////
+////////////////////                                                                                                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////                                                                                                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level 3
+Three = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Three ()
+{
+    Phaser.Scene.call(this, { key: 'Three' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+
+test = 0;
+gosign = 0;
+cast = 0;
+
+
+
+    
+    let jump = this.sound.add('jump',{volume: 0.1});
+    let bop = this.sound.add('bop');
+    let castletheme = this.sound.add('castlemusic');
+    castletheme.loop = true;
+    
+    var left = this.add.image(-1000,380, 'left').setInteractive({ pixelPerfect: true });
+    var right = this.add.image(-1000,380, 'right').setInteractive({ pixelPerfect: true });
+    var up = this.add.image(-1000,380, 'jumpb').setInteractive({ pixelPerfect: true });
+    if(mobile == 1){
+   left.x = 300;
+   right.x = 360;
+   up.x = 490;
+   }
+    left.setScrollFactor(0);
+    up.setScrollFactor(0);
+    right.setScrollFactor(0);
+    left.setDepth(10);
+    right.setDepth(10);
+    up.setDepth(10);
+
+    map = this.make.tilemap({key:'map3'});
+    // tiles for the ground layer
+     var groundTiles = map.addTilesetImage('tiles');
+     var spikedown = map.addTilesetImage('downspike');
+     var torch = map.addTilesetImage('torch');
+     // create the ground layer
+    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    fakeLayer = map.createDynamicLayer('Fake', groundTiles, 0, 0);
+    fakeLayer2 = map.createDynamicLayer('Fake2', groundTiles, 0, 0);
+    hurt = map.createDynamicLayer('Hurt', spikedown, 0, 0);
+    torches = map.createDynamicLayer('Torches', torch, 0, 0);
+    fakeLayer2.setDepth(2);
+    // the player will collide with this layer
+    groundLayer.setCollisionByExclusion([-1]);
+    hurt.setCollisionByExclusion([-1]);
+
+    // set the boundaries of our game world
+    this.physics.world.bounds.width = groundLayer.width;
+    this.physics.world.bounds.height = groundLayer.height;
+
+    // create the player sprite    
+    player = this.physics.add.sprite(56, 656); //bounce from items
+    player.body.immovable = true;
+    player.setDepth(1);
+    player.setCollideWorldBounds(true); // don't go out of the map    
+
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0); 
+    
+    
+    // player will collide with the level tiles 
+    this.physics.add.collider(groundLayer, player);
+    //this.physics.add.collider(layer3,player);
+    
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // set bounds so the camera won't go outside the game world
+    this.cameras.main.setBounds(0, -30, map.widthInPixels, map.heightInPixels);
+    // make the camera follow the player
+    this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=3;
+    // set background color, so the sky is not black    
+    //this.cameras.main.setBackgroundColor('#ccccff');
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(270, 200, 'Doof', { fontSize: '10px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+((game.input.mousePointer.x/3)+(this.cameras.main.scrollX+266.66666666666663))+' Y:'+((game.input.mousePointer.y/3)+(this.cameras.main.scrollY+200)));
+    },this);
+   
+    */
+      
+     
+    
+     
+    player.anims.play('right', true);
+
+    
+    var i = 0;
+    this.dead = function(){
+    let death = this.sound.add('robux');
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+  
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    
+    // restart game
+    this.time.delayedCall(1000, function() {
+     this.scene.restart();
+    }, [], this);
+
+    castletheme.stop();
+ 
+};
+
+
+
+this.physics.add.collider(hurt,player,this.dead,null,this);
+
+
+
+
+var restart = this.add.image(523,210,'restart').setInteractive({ pixelPerfect: true });
+    restart.on('pointerdown', () => this.dead());
+    restart.on('pointerover', function () {
+
+        this.setTint(0x00ff00);
+        
+
+    });
+    restart.on('pointerout', function () {
+
+        this.setTint();
+
+    });
+restart.displayHeight = 16;
+restart.displayWidth = 16;
+restart.setScrollFactor(0);
+
+
+    
+/*
+    var coreText;
+    coreText = this.add.text(270, 210, 'player pos', { fontSize: '10px', fill: '#FFFFFF' });
+    // fix the text to the camera
+    coreText.setScrollFactor(0);
+
+    this.input.on('pointerdown', function (pointer) {
+    coreText.setText('X: ' + player.x + ' Y: ' + player.y);
+    },this);
+   
+*/
+
+
+
+    this.jump = function(){
+        jump.play();
+    };
+
+    longha = this.physics.add.image(112,520,'longha');
+    longha.body.immovable = true;
+    this.physics.add.collider(longha,player,this.dead,null,this);
+    
+    black = this.add.image(-1000,736,'black');
+    black.displayHeight=128;
+    black.displayWidth=32;
+
+    this.dispear = function(){
+        black.x = 16;
+    };
+
+    kaizos = this.physics.add.staticGroup(); 
+    kazo = kaizos.create(168,632,'haha');
+    kazo.setTintFill(0);
+    kazo.setDepth(-1);
+    //kazo.body.immovable = true;
+    //kazo.body.setAllowGravity(false);
+    this.physics.add.collider(kazo,player);
+    
+    this.kazoo = function(){
+        kazo.x = -1000;
+        kazo.refreshBody();
+    };
+
+    
+    kaizo = kaizos.create(-1000,632,'kaizo');
+        //kaizo.body.immovable = true;
+        //kaizo.body.setAllowGravity(false);
+        this.physics.add.collider(kaizo,player);
+    var boptime = 0;
+    this.kaizo = function(){
+       boptime++;
+        if(boptime < 2){
+            bop.play();
+        }
+        kaizo.x = 168;
+        kaizo.refreshBody();
+        
+    };
+
+hightoo = this.physics.add.image(-1000,545,'haha');
+hightoo.body.immovable = true;
+hightoo.body.setAllowGravity(false);
+this.physics.add.collider(hightoo,player,this.dead,null,this);
+
+var hooey = 0;
+this.toohigh= function(){
+hooey++;
+if(hooey > 0 && hooey < 2){
+hightoo.x = 350;
+hightoo.setVelocityX(-500);
+}
+};
+    
+not = this.physics.add.image(-1000,616,'fakeb');  
+not.body.immovable = true;
+not.body.setAllowGravity(false);
+not.setDepth(5);
+
+this.physics.add.collider(not,player,this.dead,null,this);
+black2 = this.add.image(-1000,616,'black');
+black2.displayHeight=16;
+black2.displayWidth=16;
+
+var doozy = 0;
+this.betray = function(){
+doozy++;
+if(doozy > 0 && doozy < 2){
+not.x = 392;
+black2.x = 392;
+not.setVelocityX(200);
+not.setVelocityY(200);
+}
+};
+
+coins = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584, stepX: 16 }
+});
+coins2 = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584+16, stepX: 16 }
+});
+coins3 = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584+16+16, stepX: 16 }
+});
+coins4 = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584+16+16+16, stepX: 16 }
+});
+coins5 = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584+16+16+16+16, stepX: 16 }
+});
+coins6 = this.physics.add.group({
+    key: 'coin',
+    repeat: 17,
+    setXY: { x: 536, y: 584+16+16+16+16+16, stepX: 16 }
+});
+
+coins.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+coins2.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+coins3.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+coins4.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+coins5.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+coins6.children.iterate(function (child) {
+
+child.body.setAllowGravity(false);
+
+});
+
+function collection (player, coin)
+{
+    coin.disableBody(true, true);
+    bop.play();
+
+}
+
+this.physics.add.collider(coins,player,collection,null,this);
+this.physics.add.collider(coins2,player,collection,null,this);
+this.physics.add.collider(coins3,player,collection,null,this);
+this.physics.add.collider(coins4,player,collection,null,this);
+this.physics.add.collider(coins5,player,collection,null,this);
+this.physics.add.collider(coins6,player,collection,null,this);
+
+
+this.unstop = function(){
+    player.body.immovable = true;
+};
+
+this.stop = function(){
+    player.body.immovable = false;
+};
+
+
+hacoins = this.physics.add.staticGroup();
+hacoin = hacoins.create(568,664,'coin'); 
+hacoin2 = hacoins.create(792,664,'coin');  
+hacoin3 = hacoins.create(616,648,'coin'); 
+hacoin4 = hacoins.create(664,664,'coin'); 
+hacoin5 = hacoins.create(776,664,'coin');
+
+//hacoin.body.immovable = true;
+//hacoin.body.setAllowGravity(false);
+
+haacoin = this.add.image(-1000,664,'evilcoin');  
+
+this.hoocoin = function(player,hacoins){
+
+haacoin.x = hacoins.x;
+haacoin.y = hacoins.y;
+
+
+this.dead();
+};
+
+this.physics.add.collider(hacoins,player,this.hoocoin,null,this);
+
+sign = this.physics.add.staticGroup(); 
+thesign = sign.create(992,656,'sign');
+this.physics.add.collider(thesign,player,this.dead,null,this);
+
+
+this.signgo = function(){
+thesign.x-=20;
+thesign.refreshBody();
+};
+
+this.playcastle = function(){
+castletheme.play();
+};
+
+this.stoptheme = function(){
+    castletheme.stop();
+};
+
+this.input.addPointer(10);
+    
+    left.on('pointerdown', () => {
+        //ispressed = true;
+        leftwards++;
+
+
+        });
+    left.on('pointerout', () => leftwards = 0);
+    left.on('pointerover', () => {
+        if(ispressed){
+        leftwards++;
+        }
+    });
+    left.on('pointerup', () => {
+        ispressed = false;
+        leftwards = 0;
+        });
+   
+   //////////////
+   
+        right.on('pointerdown', () => {
+        //ispressed2 = true;
+        rightwards++;
+
+
+        });
+    right.on('pointerout', () => rightwards = 0);
+    right.on('pointerover', () => {
+        if(ispressed){
+        rightwards++;
+        }
+    });
+    right.on('pointerup', () => {
+        ispressed = false;
+        rightwards = 0;
+        });  
+
+
+
+           //////////////
+   
+        up.on('pointerdown', () => {
+        //ispressed3 = true;
+        upwards++;
+
+
+        });
+    up.on('pointerout', () => upwards = 0);
+    up.on('pointerover', () => {
+        if(ispressed){
+        upwards++;
+        }
+    });
+    up.on('pointerup', () => {
+        ispressed = false;
+        upwards = 0;
+        });  
+
+        this.input.on('pointerdown', function () {
+            ispressed = true;
+    },this);
+
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+    
+   
+    
+    
+    
+    if (cursors.left.isDown||leftwards > 0)
+       {
+        
+        player.setVelocityX(-80);
+       
+      
+        player.anims.play('left', true);
+        
+
+       }
+       else if (cursors.right.isDown|| rightwards > 0)
+       {
+           player.setVelocityX(80);
+
+           
+            player.anims.play('right', true);
+            
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor()|| upwards > 0 && player.body.onFloor())
+       {
+        
+         player.setVelocityY(-270);   
+         this.jump();
+        
+        
+       }
+
+       if(player.x < 25 && player.y >656){
+           this.dispear();
+       }
+       
+       if(player.y == 760){
+           this.dead();
+       }
+    
+       
+       if(test > 0){
+           this.kaizo();
+       }
+       
+       /*
+       if(player.x > 151 && player.x < 185 && player.y > 610 && player.y < 650){
+        
+        if(player.body.blocked.up){
+            test++;
+            
+           }else{
+               
+            this.kazoo();
+           }
+           
+       } else {
+           kazo.x = 168;
+       }
+       */
+       if(player.x > 168-17 && player.x < 168+17 && player.y > 632-20 && player.y < 632+17){
+       if(player.body.blocked.up){
+        test++;
+       }else{
+           this.kazoo();
+       }
+       
+    }else{
+        if(test < 1){
+        kazo.x = 168;
+        kazo.refreshBody();
+        }
+        
+        if(player.y < 570){
+            this.toohigh();
+        }
+
+        if(player.x > 417){
+            this.betray();
+        }
+        
+        if(player.x > 512){
+            this.unstop();
+        }else{
+            this.stop();
+        }
+
+        if(player.x > 878){
+            gosign++;
+        }
+
+        if(gosign > 0){
+            this.signgo();
+        }
+
+        if(player.x == 1016){
+            this.scene.start('Four');  
+            this.stoptheme();
+        }
+
+       // if(checkpoint > 0){
+        //    this.scene.start('Four'); 
+        //}
+
+        cast++;
+      if(cast > 0 && cast < 2){
+          this.playcastle();
+      }
+    }
+}
+});
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///Level 4
+Four = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Four ()
+{
+    Phaser.Scene.call(this, { key: 'Four' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    
+    let jump = this.sound.add('jump',{volume: 0.1});
+    let checkmusic = this.sound.add('checkmusic');
+
+    var left = this.add.image(-1000,380, 'left').setInteractive({ pixelPerfect: true });
+    var right = this.add.image(-1000,380, 'right').setInteractive({ pixelPerfect: true });
+    var up = this.add.image(-1000,380, 'jumpb').setInteractive({ pixelPerfect: true });
+    if(mobile == 1){
+   left.x = 300;
+   right.x = 360;
+   up.x = 490;
+   }
+    left.setScrollFactor(0);
+    up.setScrollFactor(0);
+    right.setScrollFactor(0);
+    left.setDepth(10);
+    right.setDepth(10);
+    up.setDepth(10);
+    
+    map = this.make.tilemap({key:'map4'});
+    // tiles for the ground layer
+     var groundTiles = map.addTilesetImage('tiles');
+     // create the ground layer
+    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+
+    var torch = map.addTilesetImage('torch');
+     // create the ground layer
+    torches = map.createDynamicLayer('Torches', torch, 0, 0);
+    
+    
+    // the player will collide with this layer
+    groundLayer.setCollisionByExclusion([-1]);
+
+    // set the boundaries of our game world
+    this.physics.world.bounds.width = groundLayer.width;
+    this.physics.world.bounds.height = groundLayer.height;
+
+    // create the player sprite    
+    player = this.physics.add.sprite(8, 664); //bounce from items
+    if(checkpoint > 0){
+        player.x = 152;
+        player.y = 664;
+    }
+    player.setCollideWorldBounds(true); // don't go out of the map   
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0);  
+    
+    
+    // player will collide with the level tiles 
+    this.physics.add.collider(groundLayer, player);
+
+
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // set bounds so the camera won't go outside the game world
+    this.cameras.main.setBounds(0, -30, map.widthInPixels, map.heightInPixels);
+    // make the camera follow the player
+    tracker = this.add.image(90,649,'');
+    tracker.setAlpha(0);
+    this.cameras.main.startFollow(tracker);
+    this.cameras.main.zoom=3;
+    // set background color, so the sky is not black    
+    //this.cameras.main.setBackgroundColor('#ccccff');
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(270, 200, 'Doof', { fontSize: '10px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+((game.input.mousePointer.x/3)+(this.cameras.main.scrollX+266.66666666666663))+' Y:'+((game.input.mousePointer.y/3)+(this.cameras.main.scrollY+200)));
+    },this);
+   */
+    
+      
+     
+    
+     
+    player.anims.play('right', true);
+
+    
+    var i = 0;
+    this.dead = function(){
+    let death = this.sound.add('robux');
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+  
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    
+    // restart game
+    if(checkpoint > 0){
+    this.time.delayedCall(1000, function() {
+     this.scene.restart();
+    }, [], this);
+    }else{
+    this.time.delayedCall(1000, function() {
+     this.scene.start('Three');
+    }, [], this);
+    }
+ 
+};
+
+
+
+
+
+
+
+
+
+var restart = this.add.image(523,210,'restart').setInteractive({ pixelPerfect: true });
+    restart.on('pointerdown', () => this.dead());
+    restart.on('pointerover', function () {
+
+        this.setTint(0x00ff00);
+        
+
+    });
+    restart.on('pointerout', function () {
+
+        this.setTint();
+
+    });
+restart.displayHeight = 16;
+restart.displayWidth = 16;
+restart.setScrollFactor(0);
+
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, 'duh', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+    
+   /*
+    var coreText;
+    coreText = this.add.text(270, 210, 'player pos', { fontSize: '10px', fill: '#FFFFFF' });
+    // fix the text to the camera
+    coreText.setScrollFactor(0);
+
+    this.input.on('pointerdown', function (pointer) {
+    coreText.setText('X: ' + player.x + ' Y: ' + player.y);
+    },this);
+     */
+    
+
+
+
+
+    this.jump = function(){
+        jump.play();
+    };
+
+    warning = this.add.image(-1000,627,'warning');
+    warning.displayHeight = 200;
+    warning.displayWidth= 200;
+
+    warning2 = this.add.image(-1000,650,'warning2');
+    warning2.displayHeight = 200;
+    warning2.displayWidth= 200;
+    
+    this.warning = function(){
+        warning.x = 131;
+    };
+
+    this.warning2 = function(){
+        warning2.x = 131; 
+    };
+
+    noflag = this.add.image(152,656,'noflag');
+    noflag.setDepth(-10);
+
+    yesflag = this.add.image(-1000,656,'yesflag');
+    yesflag.setDepth(-9);
+
+    badtorch = this.physics.add.image(120,632,'torch');
+    badtorch.setDepth(-10);
+    badtorch.body.immovable = true;
+    badtorch.body.setAllowGravity(false);
+    this.physics.add.collider(badtorch,player,this.dead,null,this);
+
+    this.torchzoom = function(){
+    badtorch.setVelocityY(200);
+    };
+
+    badtorch2 = this.physics.add.image(184,632,'torch');
+    badtorch2.setDepth(-10);
+    badtorch2.body.immovable = true;
+    badtorch2.body.setAllowGravity(false);
+    this.physics.add.collider(badtorch2,player,this.dead,null,this);
+
+    this.torchzoom2 = function(){
+    badtorch2.setVelocityX(-600);
+    };
+
+    this.checkpoint = function(){
+        yesflag.x = 152;
+        checkcounter++;
+        if(checkcounter > 0 && checkcounter < 2){
+        checkmusic.play();
+        }
+    };
+
+    arrow = this.add.image(223,670,'arrow');
+    arrow.setDepth(-10);
+
+    this.input.addPointer(10);
+    
+    left.on('pointerdown', () => {
+        //ispressed = true;
+        leftwards++;
+
+
+        });
+    left.on('pointerout', () => leftwards = 0);
+    left.on('pointerover', () => {
+        if(ispressed){
+        leftwards++;
+        }
+    });
+    left.on('pointerup', () => {
+        ispressed = false;
+        leftwards = 0;
+        });
+   
+   //////////////
+   
+        right.on('pointerdown', () => {
+        //ispressed2 = true;
+        rightwards++;
+
+
+        });
+    right.on('pointerout', () => rightwards = 0);
+    right.on('pointerover', () => {
+        if(ispressed){
+        rightwards++;
+        }
+    });
+    right.on('pointerup', () => {
+        ispressed = false;
+        rightwards = 0;
+        });  
+
+
+
+           //////////////
+   
+        up.on('pointerdown', () => {
+        //ispressed3 = true;
+        upwards++;
+
+
+        });
+    up.on('pointerout', () => upwards = 0);
+    up.on('pointerover', () => {
+        if(ispressed){
+        upwards++;
+        }
+    });
+    up.on('pointerup', () => {
+        ispressed = false;
+        upwards = 0;
+        });  
+
+        this.input.on('pointerdown', function () {
+            ispressed = true;
+    },this);
+
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+    
+   
+    
+    
+    
+    if (cursors.left.isDown||leftwards > 0)
+       {
+        
+        player.setVelocityX(-80);
+       
+      
+        player.anims.play('left', true);
+        
+
+       }
+       else if (cursors.right.isDown|| rightwards > 0)
+       {
+           player.setVelocityX(80);
+
+           
+            player.anims.play('right', true);
+            
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor()|| upwards > 0 && player.body.onFloor())
+       {
+        
+         player.setVelocityY(-270);   
+         this.jump();
+        
+        
+       }
+       
+       if(player.x > 263){
+           this.warning();
+       }
+
+       if(player.x > 330){
+           this.warning2();
+       }
+       
+       if(player.x > 104 && checkpoint < 1){
+           this.torchzoom();
+       }
+       if(player.x > 136 && player.y > 610 && checkpoint < 1){
+           this.torchzoom2();
+       }
+
+       if(player.x > 138 && player.x < 155 && player.y > 632){
+           checkpoint++;
+
+       }
+
+       if(checkpoint > 0){
+           this.checkpoint();
+       }
+
+       if(player.y == 760){
+        this.scene.start('Five');
+           
+       }
+    
+       
+}
+});
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var Meg = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function Meg ()
+{
+    Phaser.Scene.call(this, { key: 'Meg' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+    deadyay = 1;
+    let megalovania = this.sound.add('megalovania',{volume: 1});
+    megalovania.loop = true;
+
+
+    this.lovania = function(){
+    megalovania.play();
+    };
+
+    this.novania = function(){
+    megalovania.stop();
+    };
+
+    megalovania.play();
+
+},
+update: function ()
+{
+    
+   // vania++;
+       //if(vania>0 && vania<2){ //&& deadyay == 1){
+        //this.lovania();
+       //}
+    
+    if(deadyay == 0){
+       this.novania();
+    }
+}
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level 5
+Five = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Five ()
+{
+    Phaser.Scene.call(this, { key: 'Five' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    
+    var left = this.add.image(-1000,460, 'left').setInteractive({ pixelPerfect: true });
+    left.setScale(2.2);
+    var right = this.add.image(-1000,460, 'right').setInteractive({ pixelPerfect: true });
+    right.setScale(2.2);
+    var up = this.add.image(-1000,460, 'jumpb').setInteractive({ pixelPerfect: true });
+    up.setScale(2.2);
+    if(mobile == 1){
+   left.x = 200;
+   right.x = 320;
+   up.x = 570;
+   }
+    left.setScrollFactor(0);
+    up.setScrollFactor(0);
+    right.setScrollFactor(0);
+    left.setDepth(10);
+    right.setDepth(10);
+    up.setDepth(10);
+    
+    timetest = 0;
+    canjump = 0;
+    blastalp = 0;
+    blastalp2 = 0;
+    blastalp3 = 0;
+    blastalp4 = 0;
+    blastalp5 = 0;
+    blastalp6 = 0;
+    blastalp7 = 0;
+    blastalp8 = 0;
+    blastalp9 = 0;
+    blastalp10 = 0;
+    vania = 0;
+    merc = 1;
+    
+    this.scene.launch('Meg');
+    let jump = this.sound.add('jump',{volume: 0.1});
+    //let megalovania = this.sound.add('megalovania',{volume: merc});
+    //megalovania.loop = true;
+    let blasting = this.sound.add('blastsound');
+    let blasting2 = this.sound.add('blastsound');
+    let blasting3 = this.sound.add('blastsound');
+    let blasting4 = this.sound.add('blastsound');
+    let blasting5 = this.sound.add('blastsound');
+    let blasting6 = this.sound.add('blastsound');
+    let blasting7 = this.sound.add('blastsound');
+    let blasting8 = this.sound.add('blastsound');
+    let blasting9 = this.sound.add('blastsound');
+    let blasting10 = this.sound.add('blastsound');
+   
+    // create the player sprite    
+    player = this.physics.add.sprite(400,370); //bounce from items
+    player.setCollideWorldBounds(true); // don't go out of the map    
+
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0); 
+
+
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+
+    // make the camera follow the player
+    //this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=1.5;
+
+    /*
+    // this text will show the score
+    var scoreText;
+    scoreText = this.add.text(150, 110, 'Doof', { fontSize: '20px', fill: '#ffffff' });
+    var coreText;
+    coreText = this.add.text(150, 130, 'Daff', { fontSize: '20px', fill: '#ffffff' });
+    var oreText;
+    oreText = this.add.text(150, 150, 'Diff', { fontSize: '20px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    //timedEvent = this.time.addEvent({ delay: 1000, repeat: 9 });
+   
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+(game.input.mousePointer.x/1.5+133.33333)+' Y:'+(game.input.mousePointer.y/1.5+100));
+    coreText.setText('X:'+(pos.x)+' Y:'+(pos.y));
+    
+    },this);
+*/
+player.anims.play('right', true);
+
+    
+    var i = 0;
+    this.dead = function(){
+    let death = this.sound.add('robux');
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+        deadyay = 0;
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    
+    // restart game
+    this.time.delayedCall(1000, function() {
+     if(checkpoint > 0 ){
+         this.scene.start('Four');
+     }else{
+     this.scene.start('Three');
+     }
+    }, [], this);
+    
+    
+ 
+};
+
+
+
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, 'duh', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+
+
+
+//pos = this.add.image(game.input.mousePointer.x,game.input.mousePointer.y,'haha');
+
+
+
+    this.jump = function(){
+        jump.play();
+    };
+
+    ground = this.physics.add.staticGroup();
+    theground = ground.create(400,394.5,'');
+    theground.displayHeight= 1;
+    theground.displayWidth = 800;
+    theground.setAlpha(0);
+    theground.refreshBody();
+    this.physics.add.collider(theground, player);
+
+    theground2 = ground.create(561,300,'');
+    theground2.displayHeight= 600;
+    theground2.displayWidth = 1;
+    theground2.setAlpha(0);
+    theground2.refreshBody();
+    this.physics.add.collider(theground2, player);
+
+    theground3 = ground.create(239,300,'');
+    theground3.displayHeight= 600;
+    theground3.displayWidth = 1;
+    theground3.setAlpha(0);
+    theground3.refreshBody();
+    this.physics.add.collider(theground3, player);
+
+    sanscreen = ground.create(400,300,'sanscreen');
+    sanscreen.displayHeight = 600/1.5;
+    sanscreen.displayWidth = 800/1.5;
+    sanscreen.setDepth(-10);
+    
+    //bones = this.physics.add.staticGroup();
+    bones = this.physics.add.group();
+    bone1 = bones.create(178,378,'bone');
+    bone1.body.immovable = true;
+    bone1.body.setAllowGravity(false);
+    bone2 = bones.create(617,370,'bone2');
+    bone2.body.immovable = true;
+    bone2.body.setAllowGravity(false);
+    bone3 = bones.create(617,378,'bone');
+    bone3.body.immovable = true;
+    bone3.body.setAllowGravity(false);
+    bone4 = bones.create(617,370,'bone2');
+    bone4.body.immovable = true;
+    bone4.body.setAllowGravity(false);
+    bone5 = bones.create(178,370,'bone2');
+    bone5.body.immovable = true;
+    bone5.body.setAllowGravity(false);
+    bone5.displayHeight = 200;
+    
+    
+    
+this.physics.add.collider(bones, player,this.dead,null,this);
+    bones.setDepth(-11);
+
+    this.timer = function(){
+    oreText.setText(timetest);
+    //pos.x = game.input.mousePointer.x/1.5+133.33333;
+    //pos.y = game.input.mousePointer.y/1.5+100;
+    };
+
+    this.movebone = function(){
+    bone5.x = 393;
+    };
+
+    smallbones = this.physics.add.group({
+    key: 'smallbone',
+    repeat: 100,
+    setXY: { x: 600, y: 386, stepX: 16 }
+    });
+    
+smallbones.children.iterate(function (child) {
+
+    child.body.immovable = true;
+    child.body.setAllowGravity(false);
+
+});
+
+platforms = this.physics.add.group({
+    key: 'grey',
+    repeat: 12,
+    setXY: { x: 630, y: 353, stepX: 120}
+    });
+
+    platforms.setDepth(-11);
+    smallbones.setDepth(-11);
+
+platforms.children.iterate(function (child) {
+
+child.body.immovable = true;
+child.body.setAllowGravity(false);
+child.displayHeight = 8;
+child.displayWidth = 48;
+
+});
+
+this.canjump = function(){
+    if (cursors.up.isDown && player.y > 340 && player.y < 341)
+       {
+        
+         player.setVelocityY(-270);   
+         this.jump();
+       }
+        
+       if(cursors.up.isDown){
+           
+           canjump = 0;
+       
+       }else{
+           canjump = 1;
+       }
+       
+};
+
+//this.physics.add.collider(smallbones, player);
+this.physics.add.collider(smallbones, player,this.dead,null,this); 
+this.physics.add.collider(platforms, player,this.canjump,null,this); 
+
+blaster = this.add.image(399,170,'blaste');//180
+blaster. displayHeight = 80;
+blaster. displayWidth = 60;
+blaster.setAlpha(blastalp);
+
+blaster2 = this.add.image(269,170,'blaste');//180
+blaster2. displayHeight = 80;
+blaster2. displayWidth = 60;
+blaster2.setAlpha(blastalp2);
+
+blaster3 = this.add.image(329,170,'blaste');//180
+blaster3. displayHeight = 80;
+blaster3. displayWidth = 60;
+blaster3.setAlpha(blastalp3);
+
+blaster4 = this.add.image(531,170,'blaste');//180
+blaster4. displayHeight = 80;
+blaster4. displayWidth = 60;
+blaster4.setAlpha(blastalp4);
+
+blaster5 = this.add.image(471,170,'blaste');//180
+blaster5. displayHeight = 80;
+blaster5. displayWidth = 60;
+blaster5.setAlpha(blastalp5);
+
+blastdown = this.add.image(-1000,450,'grey');//400
+blastdown. displayHeight = 500;
+blastdown. displayWidth = 50;
+
+blastdown2 = this.add.image(-1000,450,'grey');//400
+blastdown2. displayHeight = 500;
+blastdown2. displayWidth = 50;
+
+blastdown3 = this.add.image(-1000,450,'grey');//400
+blastdown3. displayHeight = 500;
+blastdown3. displayWidth = 50;
+
+blastdown4 = this.add.image(-1000,450,'grey');//400
+blastdown4. displayHeight = 500;
+blastdown4. displayWidth = 50;
+
+blastdown5 = this.add.image(-1000,450,'grey');//400
+blastdown5. displayHeight = 500;
+blastdown5. displayWidth = 50;
+
+blastdown6 = this.add.image(-1000,386,'grey');//400
+blastdown6.setDepth(2);
+blastdown6. displayHeight = 50;
+blastdown6. displayWidth = 500;
+
+blastdown7 = this.add.image(-1000,386,'grey');//400
+blastdown7.setDepth(2);
+blastdown7. displayHeight = 50;
+blastdown7. displayWidth = 500;
+
+rightblaster = this.add.image(180,386,'rightblaste');//180
+rightblaster. displayHeight = 60;
+rightblaster. displayWidth = 80;
+rightblaster.setAlpha(blastalp6);
+
+leftblaster = this.add.image(620,386,'leftblaste');//620
+leftblaster. displayHeight = 60;
+leftblaster. displayWidth = 80;
+leftblaster.setAlpha(blastalp7);
+    
+this.blast1 = function(){
+blastalp+=0.03;
+blaster.setAlpha(blastalp);
+};
+this.blast2 = function(){
+blastdown.x = 400;
+if(player.x > 368 && player.x < 431){
+    this.dead();
+}
+};
+this.blast3 = function(){
+blastdown.x = -1000;
+//blaster.x = -1000;
+blastalp-=0.03;
+blaster.setAlpha(blastalp);
+};
+
+this.blastsound = function(){
+blasting.play();
+};
+this.blastsound2 = function(){
+blasting2.play();
+};
+this.blastsound3 = function(){
+blasting3.play();
+};
+this.blastsound4 = function(){
+blasting4.play();
+};
+this.blastsound5 = function(){
+blasting5.play();
+};
+this.blast4 = function(){
+blastalp2+=0.03;
+blaster2.setAlpha(blastalp2);
+blastalp3+=0.03;
+blaster3.setAlpha(blastalp3);
+blastalp4+=0.03;
+blaster4.setAlpha(blastalp4);
+blastalp5+=0.03;
+blaster5.setAlpha(blastalp5);
+};
+this.blast5 = function(){
+blastdown2.x = 269;
+blastdown3.x = 330;
+blastdown4.x = 531;
+blastdown5.x = 470;
+
+if(player.x < 362 || player.x > 437 ){
+    this.dead();
+}
+
+};
+this.blast6 = function(){
+blastdown2.x = -1000;
+blastdown3.x = -1000;
+blastdown4.x = -1000;
+blastdown5.x = -1000;
+
+blastalp2-=0.03;
+blastalp3-=0.03;
+blastalp4-=0.03;
+blastalp5-=0.03;
+
+blaster2.setAlpha(blastalp2);
+blaster3.setAlpha(blastalp3);
+blaster4.setAlpha(blastalp4);
+blaster5.setAlpha(blastalp5);
+};
+
+////////////////////////////////
+
+this.blast7 = function(){
+    blastalp6+=0.03;
+    rightblaster.setAlpha(blastalp6);
+};
+
+this.blast8 = function(){
+blastdown6.x = 450;
+if(player.y > 353){
+    this.dead();
+}
+};
+
+this.blast9 = function(){
+blastdown6.x = -1000;
+blastalp6-=0.03;
+rightblaster.setAlpha(blastalp6);
+};
+
+////////////////////////////////
+
+this.blast10 = function(){
+    blastalp7+=0.03;
+    leftblaster.setAlpha(blastalp7);
+};
+
+
+this.blast11 = function(){
+blastdown7.x = 350;
+if(player.y > 353){
+    this.dead();
+}
+}; 
+
+this.blast12 = function(){
+blastdown7.x = -1000;
+blastalp7-=0.03;
+leftblaster.setAlpha(blastalp7);
+};
+
+////////////////////////////////
+
+this.blast13 = function(){
+    blastalp+=0.03;
+    blaster.setAlpha(blastalp);
+};
+
+
+this.blast14 = function(){
+blastdown7.x = 350;
+blastdown7.displayWidth = 1000;
+if(player.y > 353){
+    this.dead();
+}
+}; 
+
+this.blast15 = function(){
+blastdown7.x = -1000;
+blastalp-=0.03;
+blaster.setAlpha(blastalp);
+};
+
+this.lovania = function(){
+    //megalovania.play();
+};
+
+this.input.addPointer(10);
+    
+    left.on('pointerdown', () => {
+        //ispressed = true;
+        leftwards++;
+
+
+        });
+    left.on('pointerout', () => leftwards = 0);
+    left.on('pointerover', () => {
+        if(ispressed){
+        leftwards++;
+        }
+    });
+    left.on('pointerup', () => {
+        ispressed = false;
+        leftwards = 0;
+        });
+   
+   //////////////
+   
+        right.on('pointerdown', () => {
+        //ispressed2 = true;
+        rightwards++;
+
+
+        });
+    right.on('pointerout', () => rightwards = 0);
+    right.on('pointerover', () => {
+        if(ispressed){
+        rightwards++;
+        }
+    });
+    right.on('pointerup', () => {
+        ispressed = false;
+        rightwards = 0;
+        });  
+
+
+
+           //////////////
+   
+        up.on('pointerdown', () => {
+        //ispressed3 = true;
+        upwards++;
+
+
+        });
+    up.on('pointerout', () => upwards = 0);
+    up.on('pointerover', () => {
+        if(ispressed){
+        upwards++;
+        }
+    });
+    up.on('pointerup', () => {
+        ispressed = false;
+        upwards = 0;
+        });  
+
+        this.input.on('pointerdown', function () {
+            ispressed = true;
+    },this);
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+   
+   timetest++;
+   //this.timer();
+    
+   if (cursors.left.isDown||leftwards > 0)
+       {
+        
+        player.setVelocityX(-80);
+       
+      
+        player.anims.play('left', true);
+        
+
+       }
+       else if (cursors.right.isDown|| rightwards > 0)
+       {
+           player.setVelocityX(80);
+
+           
+            player.anims.play('right', true);
+            
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor()|| upwards > 0 && player.body.onFloor())
+       {
+        
+         player.setVelocityY(-270);   
+         this.jump();
+        
+        
+       }
+       
+       
+       if(timetest > 70){
+           bone1.setVelocityX(50);
+           
+       }
+       
+       if(timetest > 250){
+         bone2.setVelocityX(-800);
+       }
+
+       if(timetest > 250){
+        bone3.setVelocityX(-200);
+       }
+       if(timetest > 350){
+        bone4.setVelocityX(-50);
+       }
+       if(timetest > 500){
+        bone4.setVelocityX(-800);
+       }
+       if(timetest > 570){
+        bone5.setVelocityX(80);
+       }
+       if(bone5.x > 347 && bone5.x < 365){
+        this.movebone();   
+       }
+       
+       
+       
+       if(timetest > 900 && timetest < 1550){
+        smallbones.setVelocityX(-150);
+        platforms.setVelocityX(-150);
+       }
+       
+       if(canjump == 1){ 
+        player.setFriction(1);
+        platforms.children.iterate(function (child) {
+
+        child.setFriction(1);
+
+        });
+         
+       }else{
+         
+        player.setFriction(0);
+        platforms.children.iterate(function (child) {
+
+        child.setFriction(0);
+
+        });
+         
+       
+       }
+
+       if(timetest > 1550 && timetest < 1850){
+        smallbones.setVelocityX(150);
+        platforms.setVelocityX(150);
+       }
+       if(player.x <= 247.5 || player.x >= 552.5){
+        player.setFriction(0);
+        platforms.children.iterate(function (child) {
+
+        child.setFriction(0);
+        });
+       }
+
+       if(timetest > 1850){
+        smallbones.setVelocityX(-150);
+        platforms.setVelocityX(-150);
+       }
+       
+       if(timetest > 2400 && timetest < 2450){
+       this.blast1();
+       
+       }
+       if(timetest > 2400 && timetest < 2402 ){
+       this.blastsound();
+       
+       }
+       if(timetest > 2450 && timetest < 2470){
+       this.blast2();
+       
+       }
+       if(timetest > 2470 && timetest < 2520){
+       this.blast3();
+       
+       }
+       
+       /////
+       
+       if(timetest > 2470 && timetest < 2520){
+       this.blast4();
+       
+       }
+       if(timetest > 2470 && timetest < 2472 ){
+       this.blastsound2();
+       
+       }
+       if(timetest > 2520 && timetest < 2540){
+       this.blast5();
+       
+       }
+       if(timetest > 2540){
+       this.blast6();
+       
+       }
+
+       /////
+
+       if(timetest > 2540 && timetest < 2590){
+       this.blast7();
+       
+       }
+       if(timetest > 2540 && timetest < 2542 ){
+       this.blastsound3();
+       
+       }
+       
+       if(timetest > 2590 && timetest < 2610){
+       this.blast8();
+       
+       }
+       
+       
+       if(timetest > 2610){
+       this.blast9();
+       
+       }
+
+              /////
+
+       if(timetest > 2610 && timetest < 2660){
+       this.blast10();
+       
+       }
+       if(timetest > 2610 && timetest < 2612 ){
+       this.blastsound4();
+       
+       }
+       
+       if(timetest > 2660 && timetest < 2680){
+       this.blast11();
+       
+       }
+       
+       
+       if(timetest > 2680){
+       this.blast12();
+       
+       }
+       
+       //////////////////////////////////
+       
+       if(timetest > 2750 && timetest < 2800){
+           this.blast13();
+       }
+       
+       if(timetest > 2750 && timetest < 2752 ){
+       this.blastsound5();
+       
+       }
+       
+       if(timetest > 2800 && timetest < 2820){
+       this.blast14();
+       
+       }
+       
+       
+       if(timetest > 2820){
+       this.blast15();
+
+       }
+       
+       vania++;
+       if(vania>0 && vania<2){
+        this.lovania();
+       }
+
+       if(timetest > 2900){
+         this.scene.start('Six');
+       }
+
+}
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level 6
+Six = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Six ()
+{
+    Phaser.Scene.call(this, { key: 'Six' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+   
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+
+    // make the camera follow the player
+    //this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=1.5;
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(150, 110, 'Doof', { fontSize: '20px', fill: '#ffffff' })
+    var oreText;
+    oreText = this.add.text(150, 150, 'Diff', { fontSize: '20px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    //timedEvent = this.time.addEvent({ delay: 1000, repeat: 9 });
+   
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+(game.input.mousePointer.x/1.5+133.33333)+' Y:'+(game.input.mousePointer.y/1.5+100));
+    
+    
+    },this);
+
+*/
+
+
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, 'duh', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+
+
+
+//pos = this.add.image(game.input.mousePointer.x,game.input.mousePointer.y,'haha');
+
+    
+    
+    sanscreen = this.add.image(400,300,'sanscreen2');
+    sanscreen.displayHeight = 600/1.5;
+    sanscreen.displayWidth = 800/1.5;
+    sanscreen.setDepth(-11);
+
+    var fight = this.add.image(280,456,'fight').setInteractive({ pixelPerfect: true });
+    fight.on('pointerdown', () => this.scene.start('Fight'));
+
+    fight.displayHeight = 50;
+    fight.displayWidth = 150;
+
+    var mercy = this.add.image(520,456,'mercy').setInteractive({ pixelPerfect: true });
+    mercy.on('pointerdown', () => this.scene.start('Mercy'));
+
+    mercy.displayHeight = 50;
+    mercy.displayWidth = 150;
+
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+   
+ 
+       
+       
+}
+});
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level Mercy
+Mercy = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Mercy ()
+{
+    Phaser.Scene.call(this, { key: 'Mercy' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    let talk = this.sound.add('talk',{volume: 1});
+    deadyay = 0;
+    time = 0;
+    time2 = 0;
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // make the camera follow the player
+    //this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=1.5;
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(150, 110, 'Doof', { fontSize: '20px', fill: '#ffffff' })
+    var oreText;
+    oreText = this.add.text(150, 150, 'Diff', { fontSize: '20px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    //timedEvent = this.time.addEvent({ delay: 1000, repeat: 9 });
+   
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+(game.input.mousePointer.x/1.5+133.33333)+' Y:'+(game.input.mousePointer.y/1.5+100));
+    
+    
+    },this);
+*/
+
+
+
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, 'duh', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+
+
+
+//pos = this.add.image(game.input.mousePointer.x,game.input.mousePointer.y,'haha');
+
+
+
+    
+    
+    sanscreen = this.add.image(400,300,'sanscreen');
+    sanscreen.displayHeight = 600/1.5;
+    sanscreen.displayWidth = 800/1.5;
+    sanscreen.setDepth(-11);
+
+
+    this.time = function(){
+      //  oreText.setText(time);
+    };
+
+    choice = this.add.image(-1000,318,'choice');
+    choice.displayHeight = 40;
+    choice.displayWidth = 180;
+
+    badtime = this.add.image(-1000,318,'badtime');
+    badtime.displayHeight = 40;
+    badtime.displayWidth = 280;
+    var ell = 0;
+    this.choice = function(){
+        choice.x = 401;
+        ell++;
+        if(ell > 0 && ell < 2){
+            talk.play();
+        }
+    };
+    this.choice2 = function(){
+        choice.x = -1000;
+    };
+
+    this.shake = function(){
+        badtime.x = 401;
+        this.cameras.main.shake(100,1000);
+    };
+    
+    var el = 0;
+    this.fade = function(){
+        talk.play();
+    };
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() {
+   time++;
+   this.time();
+
+   if(time > 60 && time < 160){
+       this.choice();
+   }
+
+   if(time > 100){
+       this.choice2();
+   }
+    if(time == 250){
+        this.fade();
+        this.shake();
+    }
+    if(time == 260){
+        time = 249;
+        time2++;
+    }
+    if(time2 > 8){
+        this.scene.start('One');
+        back = 1;
+    }
+}
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level Fight
+Fight = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Fight ()
+{
+    Phaser.Scene.call(this, { key: 'Fight' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    cursors = this.input.keyboard.createCursorKeys();
+    bouncing = 0;
+    scree = 0;
+    let shot = this.sound.add('shot',{volume: 0.5});
+    // make the camera follow the player
+    //this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=1.5;
+
+    // this text will show the score
+    /*
+    var scoreText;
+    scoreText = this.add.text(150, 110, 'Doof', { fontSize: '20px', fill: '#ffffff' })
+    var oreText;
+    oreText = this.add.text(150, 150, 'Diff', { fontSize: '20px', fill: '#ffffff' });
+    
+    
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    //timedEvent = this.time.addEvent({ delay: 1000, repeat: 9 });
+   
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+(game.input.mousePointer.x/1.5+133.33333)+' Y:'+(game.input.mousePointer.y/1.5+100));
+    
+    
+    },this);
+
+
+
+*/
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, '', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+
+
+
+//pos = this.add.image(game.input.mousePointer.x,game.input.mousePointer.y,'haha');
+
+
+
+    
+    
+    sanscreen = this.add.image(400,300,'sanscreen3');
+    sanscreen.displayHeight = 600/1.5;
+    sanscreen.displayWidth = 800/1.5;
+    sanscreen.setDepth(-11);
+
+
+    var fire = this.add.image(400,456,'fire').setInteractive({ pixelPerfect: true });
+
+    fire.displayHeight = 50;
+    fire.displayWidth = 150;
+
+    scar = this.physics.add.image(163,356,'scar');
+    scar.displayHeight = 80;
+    scar.displayWidth = 40;
+    scar.body.immovable = true;
+    scar.body.setAllowGravity(false);
+    
+    bullet = this.physics.add.image(-1000,305,'bullet');
+    bullet.body.immovable = true;
+    bullet.body.setAllowGravity(false);
+    bullet.displayHeight = 16;
+    bullet.displayWidth = 8;
+    
+    this.fire = function(){
+      scar.setVelocityX(0);
+      bouncing = 1;
+      fire.x = -1000;
+      bullet.x = scar.x;
+      bullet.setVelocityY(-500);
+      bullet.setVelocityX(-1500);
+      shot.play();
+    };
+    
+    fire.on('pointerdown', () => this.fire());
+   //var dog = this.physics.add.image(400,300,'haha');
+
+   this.miss = function(){
+    var Text;
+    Text = this.add.text(500, 150, 'You Missed!', { fontSize: '20px', fill: '#ffffff' });
+    this.time.delayedCall(1000, function() {
+        this.scene.start('Lose');
+    }, [], this);
+   };
+
+   screen = this.add.image(400,300,'grey');
+   screen.displayHeight = 1000;
+   screen.displayWidth = 1000;
+   screen.setAlpha(scree);
+   
+   var egg = 0;
+   this.hit = function(){
+    sanscreen4 = this.add.image(400,300,'sanscreen4');
+    sanscreen4.displayHeight = 600/1.5;
+    sanscreen4.displayWidth = 800/1.5;
+    sanscreen4.setDepth(-10);
+    bullet.disableBody(true,true);
+    screen.setAlpha(scree);
+    this.time.delayedCall(1000, function() {
+        scree+=0.01;
+    }, [], this);
+   deadyay = 0;
+
+   let death = this.sound.add('robux');
+    
+    egg++;
+    if(egg<2){
+        death.play();
+    }
+   };
+
+
+
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() 
+{
+    if(scree > 1){
+        this.scene.start('Credits');
+    }
+//bullet.x = game.input.mousePointer.x/1.5+133.33333;
+//bullet.y = game.input.mousePointer.y/1.5+100;
+  
+  
+  if(scar.x > 636 && bouncing == 0){
+    scar.setVelocityX(-400);
+  }
+  if(scar.x < 164 && bouncing == 0){
+    scar.setVelocityX(400);
+  }
+
+  if(bullet.y < 238 && bullet.x < 465 && bullet.x > 334){
+    this.hit();
+  
+  }
+  if(bullet.y < 106){
+      this.miss();
+      deadyay = 0;
+  }
+
+}
+});
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///Level Lose
+Lose = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+
+function Lose ()
+{
+    Phaser.Scene.call(this, { key: 'Lose' });
+},
+preload: function ()
+{
+    
+},
+create: function ()
+{
+    let jump = this.sound.add('jump',{volume: 0.1});
+    
+    cursors = this.input.keyboard.createCursorKeys();
+    // make the camera follow the player
+    //this.cameras.main.startFollow(player);
+    this.cameras.main.zoom=1.5;
+
+    // this text will show the score
+    
+      // create the player sprite    
+      player = this.physics.add.sprite(400,370); //bounce from items
+    player.setCollideWorldBounds(true); // don't go out of the map    
+
+    
+    // small fix to our player images, we resize the physics body object slightly
+    player.body.setSize(player.width-16, player.height-16);
+    player.body.setOffset(0, 0); 
+
+
+    // player walk animation
+    this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        player.anims.play('right', true);
+    
+    //var scoreText;
+    //scoreText = this.add.text(150, 110, 'Doof', { fontSize: '20px', fill: '#ffffff' })
+    //var oreText;
+    //oreText = this.add.text(150, 150, 'Diff', { fontSize: '20px', fill: '#ffffff' });
+    
+    var i = 0;
+    this.dead = function(){
+    let death = this.sound.add('robux');
+    i++;
+    if(i<2){
+        
+        ded = this.physics.add.sprite(player.x,player.y,'ded');
+          ded.setVelocityY(-100);
+        death.play();
+    }
+    //this.cameras.main.startFollow(ded);
+    player.disableBody(true,true);
+    
+    // restart game
+    this.time.delayedCall(1000, function() {
+     
+        if(checkpoint > 0 ){
+         this.scene.start('Four');
+     }else{
+     this.scene.start('Three');
+     }
+   
+     
+    }, [], this);
+    
+    
+ 
+};
+
+
+    /*
+    // fix the text to the camera
+    scoreText.setScrollFactor(0);
+   
+    //timedEvent = this.time.addEvent({ delay: 1000, repeat: 9 });
+   
+    this.input.on('pointerdown', function (pointer) {
+    scoreText.setText('X:'+(game.input.mousePointer.x/1.5+133.33333)+' Y:'+(game.input.mousePointer.y/1.5+100));
+    
+    
+    },this);
+
+
+*/
+
+
+    
+    //var coreText;
+    //coreText = this.add.text(370, 300, '', { fontSize: '10px', fill: '#000' });
+    // fix the text to the camera
+    //coreText.setScrollFactor(0);
+
+
+
+//pos = this.add.image(game.input.mousePointer.x,game.input.mousePointer.y,'haha');
+
+
+
+    
+    
+    sanscreen = this.add.image(400,300,'sanscreen');
+    sanscreen.displayHeight = 600/1.5;
+    sanscreen.displayWidth = 800/1.5;
+    sanscreen.setDepth(-11);
+
+    this.jump = function(){
+        jump.play();
+    };
+
+    ground = this.physics.add.staticGroup();
+    theground = ground.create(400,394.5,'');
+    theground.displayHeight= 1;
+    theground.displayWidth = 800;
+    theground.setAlpha(0);
+    theground.refreshBody();
+    this.physics.add.collider(theground, player);
+
+    theground2 = ground.create(561,300,'');
+    theground2.displayHeight= 600;
+    theground2.displayWidth = 1;
+    theground2.setAlpha(0);
+    theground2.refreshBody();
+    this.physics.add.collider(theground2, player);
+
+    theground3 = ground.create(239,300,'');
+    theground3.displayHeight= 600;
+    theground3.displayWidth = 1;
+    theground3.setAlpha(0);
+    theground3.refreshBody();
+    this.physics.add.collider(theground3, player);
+
+    dance = this.physics.add.image(400,-100,'dance');
+    dance.setScale(0.4);
+    this.physics.add.collider(dance, player,this.dead,null,this);
+//????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+},
+update: function() 
+{
+    if (cursors.left.isDown)
+       {
+        
+        player.setVelocityX(-80);
+       
+      
+        player.anims.play('left', true);
+        
+
+       }
+       else if (cursors.right.isDown)
+       {
+           
+           
+           
+           player.setVelocityX(80);
+           
+           
+            player.anims.play('right', true);
+            
+           
+       }
+       else
+       {
+           player.setVelocityX(0);
+
+       }
+
+       if (cursors.up.isDown&& player.body.onFloor())
+       {
+        
+         player.setVelocityY(-270);   
+         this.jump();
+        
+        
+       }
+
+}
+});
+
+var Credits = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function Credits ()
+{
+    Phaser.Scene.call(this, { key: 'Credits' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+    let endsong = this.sound.add('endsong',{volume: 1});
+    
+    this.cameras.main.setBackgroundColor('#ffffff');  
+    credits = this.add.image(400,1200,'credits');
+    this.scroll = function(){
+        credits.y--;
+        //scoreText.setText(credits.y);
+    };
+
+   //var scoreText;
+    //scoreText = this.add.text(400, 300, 'Doof', { fontSize: '20px', fill: '#cccccc' })
+    var ending = 0;
+    this.playend = function(){
+        ending++;
+        if(ending > 0 && ending < 2){
+            endsong.play();
+        }
+    };
+
+},
+update: function ()
+{
+this.scroll();
+this.playend();
+
+if(credits.y < 0){
+    this.scene.start('End');
+}
+
+}
+});
+
+var End = new Phaser.Class({
+
+Extends: Phaser.Scene,
+
+initialize:
+
+function End ()
+{
+    Phaser.Scene.call(this, { key: 'End' });
+},
+
+preload: function ()
+{
+    
+    
+},
+
+create: function ()
+{
+end = this.add.image(400,300,'end');
+
+},
+update: function ()
+{
+
+}
+});
+var config = {
+type: Phaser.AUTO,
+parent: 'content',
+width: 800,
+height: 600,
+pixelArt: true,
+physics: {
+    default: 'arcade',
+    arcade: {
+        gravity: { y: grav},//500 },
+        //debug:true
+    }
+},
+scene: [
+    BootScene,
+    Home,
+    transition,
+    One,
+    transitiontwo,
+    Two,
+    transitionthree,
+    Three,
+    Four,
+    Meg,
+    Five,
+    Six,
+    Mercy,
+    Fight,
+    Lose,
+    Credits,
+    End
+    
+]
+};
+var game = new Phaser.Game(config);
+
+
+</script>
+
+</body>
+</html>
